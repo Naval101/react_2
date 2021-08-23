@@ -1,0 +1,95 @@
+ for (let key in members) {
+			if (members.hasOwnProperty(key)) {
+				console.log(key + " -> " + members[key]["name"])
+				
+			}
+		}
+
+        <tr id="row1">
+			<td>
+			<span>team A</span>
+			<input type="text" id="inputteam1" onChange={handleTeam} defaultValue ="team A" hidden/>
+			</td>
+			
+			<td>
+			<span>Doe</span>
+			<input type="text" id="inputname1" onChange={handleMember} defaultValue ="Doe" hidden/>
+			</td>
+			<td>
+			<span>DEVELOPPER</span>
+			<input type="text" id="inputfonct1" onChange={handleFonction} defaultValue ="Developper" hidden/>
+			</td>
+			<td className="text-right">
+				<button type="button" className="btn btn-link" onClick={editMember} id="editrow"><b>Edit</b></button>
+				<button type="button" className="btn btn-link"  id="deleterow"><b>Delete</b></button>			
+				<button type="button" className="btn btn-link d-none" id="confirmrow" onClick={confirm}><b>Confirm</b></button>
+				<button type="button" className="btn btn-link d-none" onClick={cancel} id="cancelrow" ><b>Cancel</b></button>			
+		
+			</td>
+		
+		  </tr>
+
+
+        useEffect(()=>{
+		const teaminput=document.getElementById("inputteam1").value;
+		const nameinput=document.getElementById("inputname1").value;
+		const fonctinput=document.getElementById("inputfonct1").value;
+		setMember({...member,team : teaminput,name : nameinput,fonction : fonctinput})
+					
+	  },[])
+	const editMember =() => {
+		const btnedit= document.getElementById("editrow");
+		const btndelete= document.getElementById("deleterow");
+		const btnconfirm= document.getElementById("confirmrow");
+		const btncancel= document.getElementById("cancelrow");
+		btnedit.classList.add("d-none");
+		btndelete.classList.add("d-none");
+		btnconfirm.classList.remove("d-none");
+		btncancel.classList.remove("d-none");
+		
+		let  tds=document.getElementById("row1").childNodes;
+		let cells;
+		for (let i=0; i<tds.length-1;i++) {
+
+					cells =tds[i].childNodes;
+					cells[0].setAttribute("hidden",true);
+					cells[1].removeAttribute("hidden");
+		}
+
+	}
+	const cancel =() => {
+		const btnedit= document.getElementById("editrow");
+		const btndelete= document.getElementById("deleterow");
+		const btnconfirm= document.getElementById("confirmrow");
+		const btncancel= document.getElementById("cancelrow");
+		btnedit.classList.remove("d-none");
+		btndelete.classList.remove("d-none");
+		btnconfirm.classList.add("d-none");
+		btncancel.classList.add("d-none");
+
+		let  tds=document.getElementById("row1").childNodes;
+		let cells;
+		for (let i=0; i<tds.length-1;i++) {
+						
+					cells =tds[i].childNodes;
+					cells[0].removeAttribute("hidden");
+					cells[1].setAttribute("hidden",true);
+					
+		}	
+
+	}
+	const confirm = () => {
+		/*const teaminput=document.getElementById("inputteam1").value;
+		setMember({...member,team:teaminput})
+		const nameinput=document.getElementById("inputname1").value;
+		setMember({...member,name:nameinput})
+		const fonctinput=document.getElementById("inputfonct1").value;
+		setMember({...member,fonction:fonctinput})*/
+		const editedMember = {
+			team: member.team,
+			name:member.name,
+			fonction: member.fonction
+		}
+		//console.log(editedMember);
+
+	}

@@ -28,7 +28,7 @@ function Addtask() {
 
     const onSubmit = (evt)=> {
         evt.preventDefault();
-        axios.post('http://localhost:5000/api/task',task)
+        axios.post('https://nodeheroku082021.herokuapp.com/api/task',task)
         .then((res)=> console.log(res.data))
         .catch((err) => console.log(err))
         

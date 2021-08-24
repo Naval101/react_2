@@ -11,7 +11,7 @@ function AddMember() {
 		team:'',
 	})
 useEffect(() => {
-	axios.get('http://localhost:5000/api/team')
+	axios.get('https://nodeheroku082021.herokuapp.com/api/team')
 	.then((response) => {
 		setTeam({
 			teams: response.data.map(team => team.name),
@@ -42,7 +42,7 @@ useEffect(() => {
 			team: team.team
 		}		
 		console.log(addedMember);
-		axios.post('http://localhost:5000/api/member',addedMember)
+		axios.post('https://nodeheroku082021.herokuapp.com/api/member',addedMember)
 		.then((response) => console.log(response.data))
 		.catch(err => console.log(err));
 

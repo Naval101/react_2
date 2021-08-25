@@ -1,7 +1,6 @@
 import { IoLogIn } from "react-icons/io5";
 import { IoMdContact } from "react-icons/io";
 import {Link, NavLink} from 'react-router-dom';
-import './Nav.css';
 
 function Navbar() {
   const username= localStorage.getItem("username");
@@ -46,7 +45,7 @@ return (
   </li>
   </ul>
   }
-  
+
 </nav>
 )
 }

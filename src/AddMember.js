@@ -1,5 +1,6 @@
 import  { useState,useEffect } from 'react';
 import axios from 'axios';
+import { authHeader } from "./authHeader";
 function AddMember() {
 
 	const [member,setMember] = useState({
@@ -11,7 +12,7 @@ function AddMember() {
 		team:'',
 	})
 useEffect(() => {
-	axios.get('https://nodeheroku082021.herokuapp.com/api/team')
+	axios.get('https://nodeheroku082021.herokuapp.com/api/team',{headers:authHeader()})
 	.then((response) => {
 		setTeam({
 			teams: response.data.map(team => team.name),
@@ -42,7 +43,7 @@ useEffect(() => {
 			team: team.team
 		}		
 		console.log(addedMember);
-		axios.post('https://nodeheroku082021.herokuapp.com/api/member',addedMember)
+		axios.post('https://nodeheroku082021.herokuapp.com/api/member',addedMember,{headers:authHeader()})
 		.then((response) => console.log(response.data))
 		.catch(err => console.log(err));
 

@@ -1,10 +1,11 @@
 import {useState} from 'react';
 import axios from 'axios';
-
+import { authHeader } from './authHeader';
+import { useHistory,Redirect } from "react-router-dom";
 function AddTeam() {
 
   const [team,setTeam]=useState("");
-
+  const history = useHistory();
   const onTeamChange = (evt) => {
 
     const teamName = evt.target.value;
@@ -15,8 +16,12 @@ function AddTeam() {
     const teamname = {
       name: team
     }
-    axios.post('http://localhost:5000/api/team',teamname)
-    .then((res) => console.log(res.data))
+    axios.post('https://nodeheroku082021.herokuapp.com/api/team',teamname,{headers:authHeader()})
+    .then((res) => {
+      console.log(res.data)
+      history.push("/team")
+    })
+    .catch(err => console.log(err));
   }
     return (
         <div className="addTeam">

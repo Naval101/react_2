@@ -7,7 +7,7 @@ import AddMember from "./AddMember";
 import { IoMdAddCircle } from "react-icons/io";
 import {AiTwotoneDelete} from "react-icons/ai";
 import { FaRegEdit } from "react-icons/fa";
-
+import { authHeader } from "./authHeader";
 
 function Team() {
 	//window.onload = function() {
@@ -20,7 +20,7 @@ function Team() {
 		fonction:''
 	});
 	useEffect(() => {
-		axios.get('https://nodeheroku082021.herokuapp.com/api/member')
+		axios.get('https://nodeheroku082021.herokuapp.com/api/member',{headers:authHeader()})
 		.then((response) => {
 			setMembers(response.data)	
 		})
@@ -103,7 +103,7 @@ function Team() {
 			fonction: member.fonction,
 			team: member.team
 		}
-		axios.put('http://localhost:5000/api/member/'+id,editedMember)
+		axios.put('https://nodeheroku082021.herokuapp.com/api/member/'+id,editedMember,{headers:authHeader()})
 		.then((res) => console.log(res.data))
 		.catch(err => console.log(err))
 
@@ -128,7 +128,7 @@ function Team() {
 	}
 	const deleteMember = (id) =>{
 
-		axios.delete('http://localhost:5000/api/member/'+id)
+		axios.delete('https://nodeheroku082021.herokuapp.com/api/member/'+id,{headers:authHeader()})
 		.then((res)=> console.log(res.data))
 	}
 return (

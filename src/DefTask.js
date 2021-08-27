@@ -5,23 +5,24 @@ import axios from "axios";
 import Moment from 'moment';
 import {authHeader}  from './authHeader'
     
-function DefaultTask({team,idproject,projectname}) {
+function DefTask({team,idpro}) {
 
     const [tasks,setTasks]= useState();
-        
-    useEffect(() => {
-        axios.get('https://nodeheroku082021.herokuapp.com/api/task/'+team+'/'+idproject,{headers:authHeader()})
-        .then((res)=>{
+   
+    
+     useEffect(() => {
+         axios.get(`https://nodeheroku082021.herokuapp.com/api/task/${team}/${idpro}`,{headers:authHeader()})
+         .then((res)=>{
         setTasks(res.data)
         }).catch((err)=> console.log(err))
            
-          },[])
+          })
          
           const switchStatus=(param)=>{
             switch(param) {
               case 'Done':
-              return 'badge-success'
-              case 'Open':
+              return'badge-success'
+              case 'O pen':
               return 'badge-warning'
               case 'Closed':
               return 'badge-danger'
@@ -32,6 +33,8 @@ function DefaultTask({team,idproject,projectname}) {
         }
      
        return(
+         <div>  
+        <p>{idpro}</p>
         <table id = "tabletasks" className="table table-condensed table-hover table-sm">
           <thead>
           <tr>
@@ -81,9 +84,9 @@ function DefaultTask({team,idproject,projectname}) {
         
             </tbody>
           </table>
-    
+          </div>
             )
     
 }
 
-export default DefaultTask;
+export default DefTask;

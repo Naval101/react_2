@@ -10,7 +10,7 @@ function Task({team,idproject}) {
     const [tasks,setTasks]= useState();
     
     useEffect(() => {
-        axios.get('https://nodeheroku082021.herokuapp.com/api/task/'+team+'/'+idproject,{headers:authHeader()})
+        axios.get(`https://nodeheroku082021.herokuapp.com/api/task/${team}/${idproject}`,{headers:authHeader()})
         .then((res)=>{
           setTasks(res.data)
         }).catch((err)=> console.log(err))
@@ -84,7 +84,6 @@ function Task({team,idproject}) {
     
         </tbody>
       </table>
-
         )
 }
 

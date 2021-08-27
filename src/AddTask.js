@@ -2,6 +2,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import {useState} from "react";
 import axios from "axios";
 import './AddTask.css'
+import { authHeader } from "./authHeader";
 
 function Addtask() {
 
@@ -28,7 +29,7 @@ function Addtask() {
 
     const onSubmit = (evt)=> {
         evt.preventDefault();
-        axios.post('https://nodeheroku082021.herokuapp.com/api/task',task)
+        axios.post('https://nodeheroku082021.herokuapp.com/api/task',task,{headers:authHeader()})
         .then((res)=> console.log(res.data))
         .catch((err) => console.log(err))
         

@@ -8,18 +8,17 @@ import Login from './Login'
 import NavBar from "./Navbar"
 import Projects from "./Projects"
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
-
+import TasksByLastPro from './TasksByLastPro'
 
 function App() {
   const DefaultContainer = () => (
   localStorage.getItem("token") && localStorage.getItem("username") ?
     <div>
       <NavBar />
-      <Route path="/" exact component={Tasks} />
-      <Route path="/tasks/:idproject">
-      <Tasks />
-     </Route>
-     <Route path="/tasks" exact component={Tasks} />
+      <Route path="/" exact component={TasksByLastPro} />
+      <Route path="/tasks/:idproject" component={Tasks} />
+     <Route path="/tasks" exact component={TasksByLastPro} />
+     
       <Route path="/projects" exact component={Projects} />
       <Route path="/team" exact component={Team} />
     </div>

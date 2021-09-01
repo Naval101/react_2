@@ -23,7 +23,7 @@ function App() {
       <Route path="/team" exact component={Team} />
     </div>
     :
-    <Redirect to="login" />
+    <Redirect to="/login" />
  )
   return (
     

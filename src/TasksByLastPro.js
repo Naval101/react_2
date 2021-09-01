@@ -9,6 +9,7 @@ import AddTask from "./AddTask";
 const TasksByLastPro= ()=> {
     const [lastproject, setLastProject] = useState([{}])
     const  [teams,setTeams]= useState([]);
+    const [team, setTeam] = useState('')
     useEffect(() => {
         axios.get("https://nodeheroku082021.herokuapp.com/api/team",{headers:authHeader()})
         .then((res)=>{
@@ -22,20 +23,29 @@ const TasksByLastPro= ()=> {
    setLastProject(res.data.project)
    }).catch((err)=> console.log(err))
  },[])
+
+ const teamChange = (evt)=> {
+    const teamSelected = evt.target.value;
+    setTeam(teamSelected)
+ }
     return (
     <div className="container">    
     <h3>{lastproject.name}</h3>
-    
-        {
-          teams.map((team)=>( 
-          <div >
-           {<h5>{team.name}</h5>}
-           <AddTask />
-           <DefTask team={team.name} idpro={lastproject._id} /> 
-          </div>
-         
-              ))
-        } 
+    <select onChange={teamChange} value={team}>
+    <option value=''>Select a Team</option>
+    {
+        teams.map((team)=>( 
+            <option value={team.name}>{team.name}</option>
+        ))  
+        }
+    </select>
+    { team && team !== "" ?
+        <div>
+        <AddTask team={team} idpro={lastproject._id} />
+        <DefTask team={team} idpro={lastproject._id} />
+        </div> 
+    : null
+    }
         </div>
     )
 }

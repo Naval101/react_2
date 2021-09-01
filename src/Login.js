@@ -31,7 +31,8 @@ function Login() {
              // return <Redirect to="/" /> 
           })
           .catch((err)=> {
-              console.log(err)
+              console.log(err);
+              history.push("/login");
               alert("an error it's occured please try again!");
             })
         

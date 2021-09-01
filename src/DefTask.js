@@ -16,7 +16,7 @@ function DefTask({team,idpro}) {
         setTasks(res.data)
         }).catch((err)=> console.log(err))
            
-          })
+          },[idpro,tasks])
          
           const switchStatus=(param)=>{
             switch(param) {
@@ -31,10 +31,33 @@ function DefTask({team,idpro}) {
         
             }
         }
-     
+        
+        const deleteTask = (id)=>{
+          axios.delete('https://nodeheroku082021.herokuapp.com/api/task/'+id,{headers:authHeader()})
+          .then((res)=> console.log(res.data.message))
+        }
+
+        const editTask = (id) => {
+          const btnedit= document.getElementById("editTask"+id);
+          const btndelete= document.getElementById("deleteTask"+id);
+          const btnconfirm= document.getElementById("confirmedit"+id);
+          const btncancel= document.getElementById("canceledit"+id);
+          btnedit.classList.add("d-none");
+          btndelete.classList.add("d-none");
+          btnconfirm.classList.remove("d-none");
+          btncancel.classList.remove("d-none");
+        }
+       const cancel =(id) => {
+          const btnedit= document.getElementById("editTask"+id);
+          const btndelete= document.getElementById("deleteTask"+id);
+          const btnconfirm= document.getElementById("confirmedit"+id);
+          const btncancel= document.getElementById("canceledit"+id);
+          btnedit.classList.remove("d-none");
+          btndelete.classList.remove("d-none");
+          btnconfirm.classList.add("d-none");
+          btncancel.classList.add("d-none");
+       }
        return(
-         <div>  
-        <p>{idpro}</p>
         <table id = "tabletasks" className="table table-condensed table-hover table-sm">
           <thead>
           <tr>
@@ -72,10 +95,10 @@ function DefTask({team,idpro}) {
           
           </td>
           <td className="text-right">
-          <button type="button" className="btn btn-link" ><b><FaRegEdit /></b></button>
-          <button type="button" className="btn btn-link" ><b><AiTwotoneDelete /></b></button>			
-          <button type="button" className="btn btn-link d-none"><b>Confirm</b></button>
-          <button type="button" className="btn btn-link d-none" ><b>Cancel</b></button>			
+          <button type="button" className="btn btn-link" onClick={()=>editTask(task._id)} id={"editTask"+task._id}><b><FaRegEdit /></b></button>
+          <button type="button" className="btn btn-link" onClick={()=>deleteTask(task._id)} id={"deleteTask"+task._id}><b><AiTwotoneDelete /></b></button>			
+          <button type="button" className="btn btn-link d-none" id= {"confirmedit"+task._id}><b>Confirm</b></button>
+          <button type="button" className="btn btn-link d-none" onClick={()=>cancel(task._id)} id= {"canceledit"+task._id}><b>Cancel</b></button>			
           </td>
           </tr>
             
@@ -84,7 +107,7 @@ function DefTask({team,idpro}) {
         
             </tbody>
           </table>
-          </div>
+          
             )
     
 }

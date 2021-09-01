@@ -4,16 +4,18 @@ import axios from "axios";
 import './AddTask.css'
 import { authHeader } from "./authHeader";
 
-function Addtask() {
+function Addtask({team,idpro}) {
 
     const [task, setTask] = useState({
         task: "",
-        team: "teamA",
+        team: "",
         member: "",
         deadline: "",
         progression: 1,
-        status: "Open"
+        status: "Open",
+        project:`${idpro}`
     })
+
     const onChangeName= (evt) => {
         const taskname = evt.target.value;
         setTask({...task,task:taskname})
@@ -26,26 +28,30 @@ function Addtask() {
         const date= evt.target.value;
         setTask({...task,deadline:date})
     }
-
+    const teamClick = ()=> {
+        setTask({...task,team:team})
+    }
     const onSubmit = (evt)=> {
         evt.preventDefault();
+        // console.log(task)
         axios.post('https://nodeheroku082021.herokuapp.com/api/task',task,{headers:authHeader()})
         .then((res)=> console.log(res.data))
         .catch((err) => console.log(err))
         
         setTask({
             task: "",
-            team: "teamA",
+            team: "",
             member: "",
             deadline: "",
             progression: 1,
-            status: "Open"
+            status: "Open",
+            project:`${idpro}`
         })
     }
     return (
 
         <div className="tasks">
-        <button type="button" id= "btn-add" className="btn btn-link" data-toggle="modal" data-target="#myModal"><IoMdAddCircle /><b> Add Task</b></button>
+        <button type="button" id= "btn-add" onClick ={teamClick} className="btn btn-link" data-toggle="modal" data-target="#myModal"><IoMdAddCircle /><b> Add Task</b></button>
         <div className="modal fade" id="myModal">
         <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
@@ -63,7 +69,8 @@ function Addtask() {
                 <input type="text" 
                 onChange={onChangeName}
                 value={task.task}
-                className="form-control" 
+                className="form-control"
+                required 
                 />
             </div>
             <div className="form-group">

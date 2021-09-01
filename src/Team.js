@@ -171,7 +171,7 @@ return (
 			<td className="text-right">
 			<button type="button" className="btn btn-link" onClick={()=>editMember(currentmember._id)} id={"editrow"+currentmember._id}><b><FaRegEdit /></b></button>
 			<button type="button" className="btn btn-link"  onClick={()=>deleteMember(currentmember._id)} id={"deleterow"+currentmember._id}><b><AiTwotoneDelete /></b></button>			
-			<button type="button" className="btn btn-link d-none" id={"confirmrow"+currentmember._id} onClick={()=>confirm(currentmember._id)}><b>Confirm</b></button>
+			<button type="button" className="btn btn-link d-none"  onClick={()=>confirm(currentmember._id)} id={"confirmrow"+currentmember._id}><b>Confirm</b></button>
 			<button type="button" className="btn btn-link d-none" onClick={()=>cancel(currentmember._id)} id={"cancelrow"+currentmember._id} ><b>Cancel</b></button>			
 			</td>
 			</tr>

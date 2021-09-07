@@ -27,7 +27,7 @@ function Login() {
           .then((res)=> {
             localStorage.setItem("token",res.data.token)
             localStorage.setItem("username",res.data.name)
-            history.push("/");
+            history.push("/tasks");
              // return <Redirect to="/" /> 
           })
           .catch((err)=> {
@@ -44,6 +44,7 @@ function Login() {
         <div className="row justify-content-center ">
         <div class="col-md-7">
         <form onSubmit={submitForm} className="signinForm text-center">
+        <h3>MANAGEMENT TASKS</h3>
         <IoMdContact size="10em"/>
             <h3>Sign in </h3>
             <div className="form-group">

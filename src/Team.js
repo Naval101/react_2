@@ -76,9 +76,7 @@ function Team() {
 					cells =tds[i].childNodes;
 					cells[0].removeAttribute("hidden");
 					cells[1].setAttribute("hidden",true);
-					
 		}	
-
 	}
 
 	const handleTeam = (evt) => {

@@ -1,4 +1,3 @@
-import './Tasks.css'
 import ListTasks from "./ListTasks";
 import { useParams } from "react-router";
 function Tasks(props) {

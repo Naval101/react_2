@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Moment from 'moment';
 import {authHeader}  from './authHeader'
+import EditTask from "./EditTask";
     
 function DefTask({team,idpro}) {
 
     const [tasks,setTasks]= useState();
+    const [task, setTask] = useState({})
    
     
      useEffect(() => {
@@ -16,13 +18,13 @@ function DefTask({team,idpro}) {
         setTasks(res.data)
         }).catch((err)=> console.log(err))
            
-          },[idpro,tasks])
+          },[tasks])
          
           const switchStatus=(param)=>{
             switch(param) {
               case 'Done':
               return'badge-success'
-              case 'O pen':
+              case 'Open':
               return 'badge-warning'
               case 'Closed':
               return 'badge-danger'
@@ -31,34 +33,17 @@ function DefTask({team,idpro}) {
         
             }
         }
-        
+        const changeValue =(evt)=> {
+           setTask({...task,[evt.target.name]:evt.target.value})
+           console.log(task)
+        }
         const deleteTask = (id)=>{
           axios.delete('https://nodeheroku082021.herokuapp.com/api/task/'+id,{headers:authHeader()})
           .then((res)=> console.log(res.data.message))
         }
-
-        const editTask = (id) => {
-          const btnedit= document.getElementById("editTask"+id);
-          const btndelete= document.getElementById("deleteTask"+id);
-          const btnconfirm= document.getElementById("confirmedit"+id);
-          const btncancel= document.getElementById("canceledit"+id);
-          btnedit.classList.add("d-none");
-          btndelete.classList.add("d-none");
-          btnconfirm.classList.remove("d-none");
-          btncancel.classList.remove("d-none");
-        }
-       const cancel =(id) => {
-          const btnedit= document.getElementById("editTask"+id);
-          const btndelete= document.getElementById("deleteTask"+id);
-          const btnconfirm= document.getElementById("confirmedit"+id);
-          const btncancel= document.getElementById("canceledit"+id);
-          btnedit.classList.remove("d-none");
-          btndelete.classList.remove("d-none");
-          btnconfirm.classList.add("d-none");
-          btncancel.classList.add("d-none");
-       }
        return(
-        <table id = "tabletasks" className="table table-condensed table-hover table-sm">
+         <div>
+        <table id = {"tabletasks"+team} className="table table-condensed table-hover table-sm">
           <thead>
           <tr>
             <th>Task</th>
@@ -73,15 +58,18 @@ function DefTask({team,idpro}) {
         <tbody>
          {    
           tasks && tasks.data.map(task => (
-          <tr>       
+          <tr id={"row"+task._id}>       
           <td>
           <span>{task.task}</span>
+          <input type="text" id={"inputtask"+task._id} name = "task" defaultValue ={task.task} onChange={changeValue} hidden/>
           </td>
           <td>
           <span>{task.member}</span>
+          <input type="text" id={"inputmember"+task._id} name="member" defaultValue ={task.member} onChange={changeValue} hidden/>
           </td>
           <td>
           <span>{Moment(task.deadline).format('YYYY-MM-DD')}</span>
+          <input type="date" id={"inputdate"+task._id} name="date" defaultValue ={task.deadline} onChange={changeValue} hidden/>
           </td>
           <td>
           <span >
@@ -89,17 +77,28 @@ function DefTask({team,idpro}) {
               <div className="progress-bar" style={{width:task.progression+'%'}}>{task.progression+'%'}</div>
                </div>
               </span>
+              <input type="number" id={"inputprogress"+task._id} name="progress" defaultValue ={task.progression} onChange={changeValue} hidden/>
           </td>
           <td>
           <span class={"badge "+switchStatus(task.status)}>{task.status}</span>
-          
+          <select 
+                id={"idstatus"+task._id}
+                defaultValue={task.status}
+                name="status"
+                onChange={changeValue}
+                className="form-control" hidden>
+                <option>Open</option>
+                <option>In progress</option>
+                <option>Done</option>
+                <option>Closed</option>
+                
+                </select>
           </td>
           <td className="text-right">
-          <button type="button" className="btn btn-link" onClick={()=>editTask(task._id)} id={"editTask"+task._id}><b><FaRegEdit /></b></button>
+          <button type="button" className="btn btn-link" id={"editTask"+task._id} data-toggle="modal" data-target="#editForm"><b><FaRegEdit /></b></button>
           <button type="button" className="btn btn-link" onClick={()=>deleteTask(task._id)} id={"deleteTask"+task._id}><b><AiTwotoneDelete /></b></button>			
-          <button type="button" className="btn btn-link d-none" id= {"confirmedit"+task._id}><b>Confirm</b></button>
-          <button type="button" className="btn btn-link d-none" onClick={()=>cancel(task._id)} id= {"canceledit"+task._id}><b>Cancel</b></button>			
           </td>
+          <EditTask task={task} />
           </tr>
             
         ))
@@ -107,7 +106,7 @@ function DefTask({team,idpro}) {
         
             </tbody>
           </table>
-          
+          </div>
             )
     
 }

@@ -10,6 +10,8 @@ function ListTasks({idproject}) {
  
   const  [teams,setTeams]= useState([]);
   const [projById, setProjById] = useState({})
+  const [team, setTeam] = useState('');
+
   useEffect(() => {
     axios.get("https://nodeheroku082021.herokuapp.com/api/team",{headers:authHeader()})
     .then((res)=>{
@@ -24,19 +26,28 @@ function ListTasks({idproject}) {
     }).catch((err)=> console.log(err))
 
   }, [])
+  const teamChange = (evt)=> {
+    const teamSelected = evt.target.value;
+    setTeam(teamSelected)
+ }
   return(
-    <div>
-    <h3>{projById.name}</h3>
-  {
-    teams.map((team)=>( 
-    <div>
-     {<h5>{team.name}</h5>}
-     <AddTask />
-     <Task team={team.name} idproject={idproject}/> 
+    <div className="container">
     
-    </div>
-        ))     
-
+    <h3>{projById.name}</h3>
+    <select onChange={teamChange} value={team}>
+    <option value=''>Select a Team</option>
+    {
+        teams.map((team)=>( 
+            <option value={team.name}>{team.name}</option>
+        ))  
+        }
+    </select>
+    { team && team !== "" ?
+        <div>
+        <AddTask team={team} idpro={idproject} />
+        <Task team={team} idproject={idproject}/> 
+        </div> 
+    : null
     }
     </div>
   ) 

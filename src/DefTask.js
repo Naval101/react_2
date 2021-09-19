@@ -9,18 +9,15 @@ import EditTask from "./EditTask";
 function DefTask({team,idpro}) {
 
     const [tasks,setTasks]= useState();
-    const [task, setTask] = useState({})
-   
-    
-     useEffect(() => {
-         axios.get(`https://nodeheroku082021.herokuapp.com/api/task/${team}/${idpro}`,{headers:authHeader()})
-         .then((res)=>{
-        setTasks(res.data)
-        }).catch((err)=> console.log(err))
-           
-          },[tasks])
-         
-          const switchStatus=(param)=>{
+    const [editedTask, setEditedTask] = useState({})
+   useEffect(() => {
+            axios.get(`https://nodeheroku082021.herokuapp.com/api/task/${team}/${idpro}`,{headers:authHeader()})
+            .then((res)=>{
+           setTasks(res.data)
+           }).catch((err)=> console.log(err))
+              
+             },[tasks])   
+    const switchStatus=(param)=>{
             switch(param) {
               case 'Done':
               return'badge-success'
@@ -33,13 +30,29 @@ function DefTask({team,idpro}) {
         
             }
         }
-        const changeValue =(evt)=> {
-           setTask({...task,[evt.target.name]:evt.target.value})
-           console.log(task)
-        }
-        const deleteTask = (id)=>{
+        const onSubmit= (e)=> {
+          e.preventDefault();
+  
+          axios.put('https://nodeheroku082021.herokuapp.com/api/task/'+editedTask._id,editedTask,{headers:authHeader()})
+          .then((res) => console.log(res.data))
+          .catch(err => console.log(err))
+          console.log(editedTask);
+  
+      }
+    const editTask=(id)=> {
+      document.getElementById("form"+id).reset();
+      tasks && tasks.data.map(task => (
+        task._id===id ? setEditedTask(task) : null
+      ))      
+    }
+
+    const changeInput = (e)=> {
+      setEditedTask({...editedTask,[e.target.name]:e.target.value});
+ }
+    const deleteTask = (id)=>{
           axios.delete('https://nodeheroku082021.herokuapp.com/api/task/'+id,{headers:authHeader()})
           .then((res)=> console.log(res.data.message))
+          .catch(err=> console.error(err))
         }
        return(
          <div>
@@ -58,18 +71,16 @@ function DefTask({team,idpro}) {
         <tbody>
          {    
           tasks && tasks.data.map(task => (
-          <tr id={"row"+task._id}>       
+            
+          <tr id={"row"+task._id}>    
           <td>
           <span>{task.task}</span>
-          <input type="text" id={"inputtask"+task._id} name = "task" defaultValue ={task.task} onChange={changeValue} hidden/>
           </td>
           <td>
           <span>{task.member}</span>
-          <input type="text" id={"inputmember"+task._id} name="member" defaultValue ={task.member} onChange={changeValue} hidden/>
           </td>
           <td>
           <span>{Moment(task.deadline).format('YYYY-MM-DD')}</span>
-          <input type="date" id={"inputdate"+task._id} name="date" defaultValue ={task.deadline} onChange={changeValue} hidden/>
           </td>
           <td>
           <span >
@@ -77,36 +88,96 @@ function DefTask({team,idpro}) {
               <div className="progress-bar" style={{width:task.progression+'%'}}>{task.progression+'%'}</div>
                </div>
               </span>
-              <input type="number" id={"inputprogress"+task._id} name="progress" defaultValue ={task.progression} onChange={changeValue} hidden/>
           </td>
           <td>
           <span class={"badge "+switchStatus(task.status)}>{task.status}</span>
-          <select 
-                id={"idstatus"+task._id}
+          </td>
+          <td className="text-right">
+          <button type="button" className="btn btn-link" onClick={()=>editTask(task._id)} id={"editTask"+task._id} data-toggle="modal" data-target={"#editForm"+task._id}><b><FaRegEdit /></b></button>
+          <button type="button" className="btn btn-link" onClick={()=>deleteTask(task._id)} id={"deleteTask"+task._id}><b><AiTwotoneDelete /></b></button>			
+          </td>    
+        <div className="modal fade" id={"editForm"+task._id}>
+        <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+    
+        <div className="modal-header">
+            <h4 className="modal-title">Edit Task</h4>
+            <button type="button" className="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div className="modal-body">
+    
+            <form onSubmit = {onSubmit} id={"form"+task._id}>
+            
+            <div className="form-group">
+               <label>Task:</label>
+                <input type="text"
+                defaultValue={task.task}
+                name="task"
+                onChange={changeInput}
+                className="form-control"
+                />
+                </div>
+                <div className="form-group">
+                <label>Member name:</label>
+                <input type="text"
+                defaultValue={task.member}
+                name="member"
+                onChange={changeInput}
+                className="form-control" 
+                />
+            </div>
+                <div className="form-group">
+                <label>Deadline:</label>
+                <input type="date" 
+                defaultValue={task.deadline}
+                name="deadline"
+                onChange={changeInput}
+                className="form-control" 
+                required
+                />
+            </div>
+
+            <div className="form-group">
+                <label>Progression(%):</label>
+                <input type="number" 
+                name="progression"
+                defaultValue={task.progression}
+                onChange={changeInput}
+                className="form-control"
+                />
+            </div>
+
+            <div className="form-group">
+            <label>Status:</label>
+                <select 
+                onChange={changeInput}
                 defaultValue={task.status}
                 name="status"
-                onChange={changeValue}
-                className="form-control" hidden>
+                className="form-control">
                 <option>Open</option>
                 <option>In progress</option>
                 <option>Done</option>
                 <option>Closed</option>
                 
                 </select>
-          </td>
-          <td className="text-right">
-          <button type="button" className="btn btn-link" id={"editTask"+task._id} data-toggle="modal" data-target="#editForm"><b><FaRegEdit /></b></button>
-          <button type="button" className="btn btn-link" onClick={()=>deleteTask(task._id)} id={"deleteTask"+task._id}><b><AiTwotoneDelete /></b></button>			
-          </td>
-          <EditTask task={task} />
+             
+            </div>
+            <div className="modal-footer">
+            <input type="submit" value ="Edit" className="btn btn-primary"/>
+            </div>
+        </form>
+        </div>
+        </div>
+        </div>
+        </div>
           </tr>
-            
         ))
-         }
-        
+         }        
+         
+
             </tbody>
           </table>
-          </div>
+       </div>
             )
     
 }

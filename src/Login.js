@@ -6,8 +6,8 @@ import { IoMdContact } from "react-icons/io";
 
 function Login() {
 
-    const [email,setEmail]= useState("");
-    const [password,setPassword]= useState("");
+    const [email,setEmail]= useState("lolo@sd.com");
+    const [password,setPassword]= useState("1234");
     const history = useHistory();
 
     const submitForm= (evt) => {
@@ -48,9 +48,9 @@ function Login() {
         <IoMdContact size="10em"/>
             <h3>Sign in </h3>
             <div className="form-group">
-                <input type="email" className="form-control form-control-lg" placeholder="Email adress" onChange={e=>setEmail(e.target.value)} value={email} />
+                <input type="email" className="form-control form-control-lg" placeholder="Email adress" value={email} onChange={e=>setEmail(e.target.value)} value={email} />
             
-                <input type="password" className="form-control form-control-lg" placeholder="Password" onChange={e=>setPassword(e.target.value)} value={password} />
+                <input type="password" className="form-control form-control-lg" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} value={password} />
             </div>
                 <button type="submit" className="btn btn-primary btn-block btn-lg" onClick={submitForm}>Submit</button>
           

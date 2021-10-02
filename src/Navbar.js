@@ -33,7 +33,7 @@ return (
     <a class="nav-link" href="#"><IoMdContact size="1.5em"/> Hi {username}</a>
   </li>
   <li class="nav-item">
-  <Link to="/login" className="nav-link"><IoLogIn size="1.5em"/>Logout</Link>
+  <Link to="/" className="nav-link"><IoLogIn size="1.5em"/>Logout</Link>
   </li>
   </ul>:
   <ul class="nav navbar-nav ml-auto">
